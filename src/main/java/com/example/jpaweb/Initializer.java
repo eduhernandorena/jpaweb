@@ -32,6 +32,7 @@ public class Initializer implements ApplicationListener<ContextRefreshedEvent> {
 		userRepository.save(user2);
 		
 		User u = userRepository.findByName("oã");
+		
 		System.out.println(u.getName());
 	}
 }
