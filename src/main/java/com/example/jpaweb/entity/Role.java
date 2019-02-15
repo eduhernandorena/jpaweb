@@ -1,9 +1,8 @@
 package com.example.jpaweb.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.example.jpaweb.entity.enumeration.StatusRole;
+
+import javax.persistence.*;
 
 @Entity
 public class Role {
@@ -11,14 +10,21 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	private String name;
+	@Enumerated(value = EnumType.STRING)
+	private StatusRole status;
 	
 	public Role() {
 	}
 	
 	public Role(String name) {
 		this.name = name;
+		status = StatusRole.ATIVO;
+	}
+	
+	public Role(String name, StatusRole status) {
+		this.name = name;
+		this.status = status;
 	}
 	
 	public Long getId() {
@@ -35,5 +41,13 @@ public class Role {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public StatusRole getStatus() {
+		return status;
+	}
+	
+	public void setStatus(StatusRole status) {
+		this.status = status;
 	}
 }
