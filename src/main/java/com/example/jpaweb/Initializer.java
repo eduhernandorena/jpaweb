@@ -1,5 +1,6 @@
 package com.example.jpaweb;
 
+import com.example.jpaweb.entity.Functionality;
 import com.example.jpaweb.entity.Role;
 import com.example.jpaweb.entity.User;
 import com.example.jpaweb.entity.enumeration.StatusRole;
@@ -8,36 +9,35 @@ import com.example.jpaweb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Arrays;
 
 @Component
 public class Initializer implements ApplicationListener<ContextRefreshedEvent> {
 	@Autowired
-	private RoleRepository roleRepository;
+	private UserRepository userRepository;
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		List<Role> roles = roleRepository.findAll();
-		for (int i = 0; i < 1000; i++) {
-			saveRole("Admin", StatusRole.ATIVO);
-		}
-		for (int i = 0; i < 1000; i++) {
-			saveRole("iafehiuaf", StatusRole.INATIVO);
-		}
-		PageRequest pr = PageRequest.of(950, 60);
-		Page<Role> rols = roleRepository.findAll(pr);
+		Functionality functionality = new Functionality("Add");
+		Functionality functionality2 = new Functionality("Delete");
 		
-		for (Role role : rols) {
-			System.out.println(role.getName());
+		Role role = new Role("Admin", StatusRole.ATIVO, Arrays.asList(functionality));
+		Role role3 = new Role("Aluno", StatusRole.ATIVO, Arrays.asList(functionality2));
+		
+		User user = new User("Administrador", "admin@aphnet.com.br", Arrays.asList(role, role3));
+		
+		userRepository.save(user);
+		
+		for (User u : userRepository.findAll()) {
+			System.out.println("Usu\u00e1rio: " + u.getName());
+			for (Role r : u.getRoles()) {
+				System.out.println("Perfil: " + r.getName());
+				for (Functionality f : r.getFunctionalities()) {
+					System.out.println("Funcionalidade: " + f.getName());
+				}
+			}
 		}
-	}
-	
-	public void saveRole(String roleName, StatusRole status) {
-		Role role = new Role(roleName, status);
-		roleRepository.save(role);
 	}
 }

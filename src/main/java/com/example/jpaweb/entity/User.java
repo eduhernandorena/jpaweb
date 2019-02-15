@@ -1,6 +1,7 @@
 package com.example.jpaweb.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -10,8 +11,8 @@ public class User {
 	private Long id;
 	private String name;
 	private String email;
-	@ManyToOne
-	private Role role;
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private List<Role> roles;
 	
 	public User() {
 	}
@@ -19,6 +20,12 @@ public class User {
 	public User(String name, String email) {
 		this.name = name;
 		this.email = email;
+	}
+	
+	public User(String name, String email, List<Role> roles) {
+		this.name = name;
+		this.email = email;
+		this.roles = roles;
 	}
 	
 	public Long getId() {
@@ -45,11 +52,11 @@ public class User {
 		this.email = email;
 	}
 	
-	public Role getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 	
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRole(List<Role> roles) {
+		this.roles = roles;
 	}
 }

@@ -3,6 +3,7 @@ package com.example.jpaweb.entity;
 import com.example.jpaweb.entity.enumeration.StatusRole;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Role {
@@ -13,6 +14,8 @@ public class Role {
 	private String name;
 	@Enumerated(value = EnumType.STRING)
 	private StatusRole status;
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private List<Functionality> functionalities;
 	
 	public Role() {
 	}
@@ -22,9 +25,10 @@ public class Role {
 		status = StatusRole.ATIVO;
 	}
 	
-	public Role(String name, StatusRole status) {
+	public Role(String name, StatusRole status, List<Functionality> functionalities) {
 		this.name = name;
 		this.status = status;
+		this.functionalities = functionalities;
 	}
 	
 	public Long getId() {
@@ -49,5 +53,13 @@ public class Role {
 	
 	public void setStatus(StatusRole status) {
 		this.status = status;
+	}
+	
+	public List<Functionality> getFunctionalities() {
+		return functionalities;
+	}
+	
+	public void setFunctionalities(List<Functionality> functionalities) {
+		this.functionalities = functionalities;
 	}
 }
